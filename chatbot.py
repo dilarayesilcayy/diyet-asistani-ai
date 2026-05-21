@@ -1,0 +1,1 @@
+# İleride AI destekli sohbet modülü burada geliştirilecek.
