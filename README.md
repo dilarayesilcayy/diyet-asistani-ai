@@ -2,6 +2,13 @@
 
 A personalized nutrition and lifestyle tracking web application built with Python and Streamlit. The project combines rule-based calculations, SQLite-backed user tracking, and an OpenAI-powered conversational assistant in a single interface.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://diyet-asistani-ai.streamlit.app/)
+[![Python checks](https://github.com/dilarayesilcayy/diyet-asistani-ai/actions/workflows/python-checks.yml/badge.svg)](https://github.com/dilarayesilcayy/diyet-asistani-ai/actions/workflows/python-checks.yml)
+
+## Live Demo
+
+Try the application at **[diyet-asistani-ai.streamlit.app](https://diyet-asistani-ai.streamlit.app/)**.
+
 > **Portfolio project:** This application was developed as a Management Information Systems graduation project. It is intended for educational and demonstration purposes, not as a substitute for professional medical or nutritional advice.
 
 ## Problem
@@ -114,22 +121,22 @@ Then open `http://127.0.0.1:8000/docs` to test the calculation endpoint.
 
 ## Current Limitations
 
-- Authentication is suitable only for a prototype and must be strengthened before real-world use.
+- Authentication uses salted PBKDF2 password hashes, but the application remains an educational prototype rather than a production identity system.
 - SQLite is used as a local project database and is not designed here for multi-instance production deployment.
+- Data stored on Streamlit Community Cloud may reset when the application restarts.
 - Meal recommendations are based on a predefined dataset and rule-based filtering.
 - Calorie and exercise calculations are estimates.
-- Automated tests and continuous integration have not yet been added.
-- The project currently has no hosted public demo.
+- Automated tests currently cover core authentication and weekly-plan behavior, not the complete interface.
 
 ## Roadmap
 
-- [ ] Hash passwords and improve authentication validation
-- [ ] Remove tracked database files and initialize clean local storage
-- [ ] Add automated tests for calculation and filtering functions
-- [ ] Improve weekly-plan variety and date-aware daily selection
+- [x] Hash passwords and improve authentication validation
+- [x] Remove tracked database files and initialize clean local storage
+- [x] Add initial automated tests and continuous integration
+- [x] Improve weekly-plan variety and date-aware daily selection
 - [ ] Add SQL-based usage analytics to the dashboard
-- [ ] Add input validation and safer error handling
-- [ ] Publish a stable Streamlit demo
+- [ ] Expand input validation and safer error handling
+- [x] Publish a Streamlit demo
 - [ ] Add screenshots and an architecture diagram
 
 ## What I Learned
