@@ -11,6 +11,17 @@ Try the application at **[diyet-asistani-ai.streamlit.app](https://diyet-asistan
 
 > **Portfolio project:** This application was developed as a Management Information Systems graduation project. It is intended for educational and demonstration purposes, not as a substitute for professional medical or nutritional advice.
 
+
+## Screenshots
+
+| Dashboard | Personalized diet plan |
+| --- | --- |
+| ![Dashboard showing current weight, water intake, daily score, and today's meal plan](docs/screenshots/dashboard.jpg) | ![Diet plan overview showing BMI, calorie target, macronutrients, and meal alternatives](docs/screenshots/diet-plan-overview.jpg) |
+
+| Weekly meal plan | Daily tracking |
+| --- | --- |
+| ![Weekly meal plan with varied meals across the week](docs/screenshots/weekly-meal-plan.jpg) | ![Daily tracking summary showing calories, steps, exercise, and remaining balance](docs/screenshots/daily-tracking.jpg) |
+
 ## Problem
 
 Generic diet plans often ignore differences in body measurements, activity level, dietary preferences, budget, allergies, exercise experience, and daily habits. This project explores how those inputs can be organized into a more personalized and accessible decision-support experience.
@@ -150,7 +161,7 @@ Then open `http://127.0.0.1:8000/docs` to test the calculation endpoint.
 - [ ] Add SQL-based usage analytics to the dashboard
 - [ ] Expand input validation and safer error handling
 - [x] Publish a Streamlit demo
-- [ ] Add screenshots and an architecture diagram
+- [x] Add screenshots and an architecture diagram
 
 ## What I Learned
 
