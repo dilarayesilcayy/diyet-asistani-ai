@@ -1,4 +1,6 @@
-import random
+import heapq
+from collections import Counter
+
 from meals import alerji_eslet, ogun_onerisi
 
 
@@ -103,6 +105,36 @@ def filtrele_ogunler(ogunler, alerjiler, sevilmeyenler):
     return sonuc
 
 
+def _kombinasyonlar(kahvalti, ogle, aksam, ara, hedef_kalori):
+    """Öğün kombinasyonlarını kalori farklarıyla birlikte üret."""
+    for k in kahvalti:
+        for o in ogle:
+            for a in aksam:
+                for ar in ara:
+                    toplam = (
+                        k["kalori"]
+                        + o["kalori"]
+                        + a["kalori"]
+                        + ar["kalori"]
+                    )
+                    yield {
+                        "kahvalti": k,
+                        "ogle": o,
+                        "aksam": a,
+                        "ara": ar,
+                        "toplam": toplam,
+                        "hedef": hedef_kalori,
+                        "_fark": abs(toplam - hedef_kalori),
+                    }
+
+
+def _imza(kombinasyon):
+    return tuple(
+        kombinasyon[ogun]["ad"]
+        for ogun in ("kahvalti", "ogle", "aksam", "ara")
+    )
+
+
 def haftalik_plan(kahvalti, ogle, aksam, ara, hedef_kalori):
     gunler = [
         "Pazartesi",
@@ -114,31 +146,53 @@ def haftalik_plan(kahvalti, ogle, aksam, ara, hedef_kalori):
         "Pazar"
     ]
 
+    if not all((kahvalti, ogle, aksam, ara)):
+        return {gun: None for gun in gunler}
+
+    # Tüm seçenekleri belleğe almak yerine kalori hedefine en yakın
+    # sınırlı sayıdaki adayı tut.
+    adaylar = heapq.nsmallest(
+        100,
+        _kombinasyonlar(kahvalti, ogle, aksam, ara, hedef_kalori),
+        key=lambda secenek: secenek["_fark"],
+    )
+
+    kullanim = {
+        "kahvalti": Counter(),
+        "ogle": Counter(),
+        "aksam": Counter(),
+        "ara": Counter(),
+    }
+    kullanilan_kombinasyonlar = set()
     plan = {}
 
     for gun in gunler:
-        en_iyi_kombinasyon = None
-        en_kucuk_fark = float("inf")
+        benzersiz_adaylar = [
+            aday for aday in adaylar
+            if _imza(aday) not in kullanilan_kombinasyonlar
+        ]
+        secim_havuzu = benzersiz_adaylar or adaylar
 
-        # çok ağır brute force değil ama yeterince iyi
-        for k in kahvalti:
-            for o in ogle:
-                for a in aksam:
-                    for ar in ara:
-                        toplam = k["kalori"] + o["kalori"] + a["kalori"] + ar["kalori"]
-                        fark = abs(toplam - hedef_kalori)
+        def cesitlilik_puani(aday):
+            tekrar_sayisi = sum(
+                kullanim[ogun][aday[ogun]["ad"]]
+                for ogun in ("kahvalti", "ogle", "aksam", "ara")
+            )
+            # Yaklaşık 50 kcal fark pahasına tekrar eden bir öğün yerine
+            # yeni bir öğünü tercih et.
+            return aday["_fark"] + (tekrar_sayisi * 50)
 
-                        if fark < en_kucuk_fark:
-                            en_kucuk_fark = fark
-                            en_iyi_kombinasyon = {
-                                "kahvalti": k,
-                                "ogle": o,
-                                "aksam": a,
-                                "ara": ar,
-                                "toplam": toplam,
-                                "hedef": hedef_kalori
-                            }
+        secilen = min(secim_havuzu, key=cesitlilik_puani)
+        kullanilan_kombinasyonlar.add(_imza(secilen))
 
-        plan[gun] = en_iyi_kombinasyon
+        for ogun in ("kahvalti", "ogle", "aksam", "ara"):
+            kullanim[ogun][secilen[ogun]["ad"]] += 1
+
+        # İç hesaplama alanını arayüze göndermiyoruz.
+        plan[gun] = {
+            anahtar: deger
+            for anahtar, deger in secilen.items()
+            if anahtar != "_fark"
+        }
 
     return plan
