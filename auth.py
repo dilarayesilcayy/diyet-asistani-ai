@@ -17,9 +17,10 @@ def _hash_password(password):
         salt,
         PBKDF2_ITERATIONS,
     )
-    return (
-        f"pbkdf2_sha256$${PBKDF2_ITERATIONS}$"
-        f"${salt.hex()}$${derived_key.hex()}"
+    return "pbkdf2_sha256${}${}${}".format(
+        PBKDF2_ITERATIONS,
+        salt.hex(),
+        derived_key.hex(),
     )
 
 
