@@ -41,6 +41,19 @@ Generic diet plans often ignore differences in body measurements, activity level
 | Data handling and charts | pandas, Streamlit charts |
 | Optional API | FastAPI, Pydantic, Uvicorn |
 
+## Architecture
+
+```mermaid
+flowchart TD
+    User["User"] --> UI["Streamlit UI · app.py"]
+    UI --> Core["Auth, diet, meals, exercise and tracking modules"]
+    UI --> AI["OpenAI API"]
+    Core --> DB["SQLite database"]
+    API["FastAPI endpoint · api.py"] --> Core
+```
+
+The Streamlit interface coordinates the user journey and delegates calculations, recommendations, authentication, and tracking to focused Python modules. Persistent prototype data is handled through SQLite, while the conversational assistant calls the OpenAI API using a secret stored outside the repository.
+
 ## Project Structure
 
 ```text
