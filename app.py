@@ -169,7 +169,16 @@ if sayfa == "Dashboard":
 
         plan = haftalik_plan(kahvalti, ogle, aksam, ara, kalori)
 
-        bugun_gun = list(plan.keys())[0]
+        gunler = [
+            "Pazartesi",
+            "Salı",
+            "Çarşamba",
+            "Perşembe",
+            "Cuma",
+            "Cumartesi",
+            "Pazar"
+        ]
+        bugun_gun = gunler[datetime.date.today().weekday()]
         bugun_plan = plan[bugun_gun]
 
         st.markdown(f"""
